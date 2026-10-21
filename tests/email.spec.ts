@@ -5,7 +5,15 @@ import { checkEmail } from '../helpers/helpers';
 const cases = [
   { email: 'anna@example.ee', valid: true, reason: null },
   { email: 'annaexample.ee', valid: false, reason: 'INVALID_AT' },
-  // TODO (students): add more cases: user+tag@example.ee (valid), .anna@example.ee (INVALID_LOCAL), anna@example (INVALID_DOMAIN)
+
+  // Missing domain
+  { email: 'anna@', valid: false, reason: 'INVALID_DOMAIN' },
+  { email: 'anna@example', valid: false, reason: 'INVALID_DOMAIN' },
+
+  // Invalid domain
+  { email: 'anna@.ee', valid: false, reason: 'INVALID_DOMAIN' },
+  { email: 'anna@example..ee', valid: false, reason: 'INVALID_DOMAIN' },
+
 ];
 
 for (const { email, valid, reason } of cases) {
