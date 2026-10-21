@@ -2,7 +2,14 @@ import { test, expect } from "@playwright/test";
 import { checkEmail } from "../helpers/helpers";
 import { emailCases } from "../test-data/email.data";
 
-for (const { id, category, description, params, status, expected } of emailCases) {
+for (const {
+  id,
+  category,
+  description,
+  params,
+  status,
+  expected,
+} of emailCases) {
   test(`${id} [${category}] ${description}`, async ({ request }) => {
     const response = await checkEmail(request, params);
 

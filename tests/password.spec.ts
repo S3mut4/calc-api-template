@@ -2,7 +2,14 @@ import { test, expect } from "@playwright/test";
 import { checkPassword } from "../helpers/helpers";
 import { passwordCases } from "../test-data/password.data";
 
-for (const { id, category, description, data, status, expected } of passwordCases) {
+for (const {
+  id,
+  category,
+  description,
+  data,
+  status,
+  expected,
+} of passwordCases) {
   test(`${id} [${category}] ${description}`, async ({ request }) => {
     const response = await checkPassword(request, data);
 
