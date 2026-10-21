@@ -1,20 +1,13 @@
 import { APIRequestContext } from '@playwright/test';
 
-export function calculateShipping(
-  request: APIRequestContext,
-  country: string,
-  weightKg: string | number,
-) {
-  return request.get('/api/shipping/calculate', { params: { country, weightKg } });
-}
+export type ShippingParams = {
+  country?: string;
+  weightKg?: string | number;
+  express?: string | boolean;
+};
 
-export function calculateShippingExpress(
-  request: APIRequestContext,
-  country: string,
-  weightKg: string | number,
-  express: string | boolean,
-) {
-  return request.get('/api/shipping/calculate', { params: { country, weightKg, express } });
+export function calculateShipping(request: APIRequestContext, params: ShippingParams = {}) {
+  return request.get("/api/shipping/calculate", { params });
 }
 
 export function getTicketPrice(
