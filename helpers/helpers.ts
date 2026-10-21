@@ -33,8 +33,13 @@ export function calculateTurnoverTax(
   return request.get('/api/turnover-tax/calculate', { params: { country, amount } });
 }
 
-export function checkPassword(request: APIRequestContext, password: string) {
-  return request.post('/api/password/check', { data: { password } });
+export type PasswordBody = { password: string };
+
+export function checkPassword(request: APIRequestContext, data: PasswordBody) {
+  return request.post("/api/password/check", {
+    data,
+    headers: { "Content-Type": "application/json" },
+  });
 }
 
 export function checkEmail(request: APIRequestContext, email: string) {
