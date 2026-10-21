@@ -42,6 +42,9 @@ export function checkPassword(request: APIRequestContext, data: PasswordBody) {
   });
 }
 
-export function checkEmail(request: APIRequestContext, email: string) {
-  return request.get('/api/email/check', { params: { email } });
+export type EmailParams = { email?: string };
+
+export function checkEmail(request: APIRequestContext, params: EmailParams = {}) {
+  return request.get("/api/email/check", { params });
 }
+
