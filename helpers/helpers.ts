@@ -1,28 +1,22 @@
 import { APIRequestContext } from '@playwright/test';
 
-export function calculateShipping(
-  request: APIRequestContext,
-  country: string,
-  weightKg: string | number,
-) {
-  return request.get('/api/shipping/calculate', { params: { country, weightKg } });
+export type ShippingParams = {
+  country?: string;
+  weightKg?: string | number;
+  express?: string | boolean;
+};
+
+export function calculateShipping(request: APIRequestContext, params: ShippingParams = {}) {
+  return request.get("/api/shipping/calculate", { params });
 }
 
-export function calculateShippingExpress(
-  request: APIRequestContext,
-  country: string,
-  weightKg: string | number,
-  express: string | boolean,
-) {
-  return request.get('/api/shipping/calculate', { params: { country, weightKg, express } });
-}
+export type TicketParams = {
+  age?: string | number;
+  day?: string;
+};
 
-export function getTicketPrice(
-  request: APIRequestContext,
-  age: string | number,
-  day: string,
-) {
-  return request.get('/api/tickets/price', { params: { age, day } });
+export function getTicketPrice(request: APIRequestContext, params: TicketParams = {}) {
+  return request.get("/api/tickets/price", { params });
 }
 
 export function calculateTurnoverTax(
@@ -33,10 +27,18 @@ export function calculateTurnoverTax(
   return request.get('/api/turnover-tax/calculate', { params: { country, amount } });
 }
 
-export function checkPassword(request: APIRequestContext, password: string) {
-  return request.post('/api/password/check', { data: { password } });
+export type PasswordBody = { password: string };
+
+export function checkPassword(request: APIRequestContext, data: PasswordBody) {
+  return request.post("/api/password/check", {
+    data,
+    headers: { "Content-Type": "application/json" },
+  });
 }
 
-export function checkEmail(request: APIRequestContext, email: string) {
-  return request.get('/api/email/check', { params: { email } });
+export type EmailParams = { email?: string };
+
+export function checkEmail(request: APIRequestContext, params: EmailParams = {}) {
+  return request.get("/api/email/check", { params });
 }
+

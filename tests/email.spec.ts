@@ -1,35 +1,28 @@
-import { test, expect } from '@playwright/test';
-import { checkEmail } from '../helpers/helpers';
+import { test, expect } from "@playwright/test";
+import { checkEmail } from "../helpers/helpers";
+import { emailCases } from "../test-data/email.data";
 
-// Example of parametrization: same test, different data
-const cases = [
-  { email: 'anna@example.ee', valid: true, reason: null },
-  { email: 'annaexample.ee', valid: false, reason: 'INVALID_AT' },
+for (const {
+  id,
+  category,
+  description,
+  params,
+  status,
+  expected,
+} of emailCases) {
+  test(`${id} [${category}] ${description}`, async ({ request }) => {
+    const response = await checkEmail(request, params);
 
-  // Missing domain
-  { email: 'anna@', valid: false, reason: 'INVALID_DOMAIN' },
-  { email: 'anna@example', valid: false, reason: 'INVALID_DOMAIN' },
-
-  // Invalid domain
-  { email: 'anna@.ee', valid: false, reason: 'INVALID_DOMAIN' },
-  { email: 'anna@example..ee', valid: false, reason: 'INVALID_DOMAIN' },
-
-];
-
-for (const { email, valid, reason } of cases) {
-  test(`email: "${email}" valid=${valid}`, async ({ request }) => {
-    const response = await checkEmail(request, email);
-
-    expect(response.status()).toBe(200);
-    expect(await response.json()).toEqual({ email, valid, reason });
+    expect(response.status()).toBe(status);
+    expect(await response.json()).toEqual(expected);
   });
 }
 
-// TODO (students): TOO_LONG for an address over 254 characters
-test.fixme('email: too long address', async () => {});
+test("05_11 [Method] POST returns 405", async ({ request }) => {
+  const response = await request.post("/api/email/check", {
+    params: { email: "anna@example.ee" },
+  });
 
-// TODO (students): 400 for empty email and for missing email parameter
-test.fixme('email: invalid request returns 400', async () => {});
-
-// TODO (students): POST on /api/email/check returns 405
-test.fixme('email: unsupported method returns 405', async () => {});
+  expect(response.status()).toBe(405);
+  expect(await response.json()).toEqual({ error: expect.any(String) });
+});
