@@ -2,7 +2,14 @@ import { test, expect } from "@playwright/test";
 import { calculateShipping } from "../helpers/helpers";
 import { shippingCases } from "../test-data/shipping.data";
 
-for (const { id, category, description, params, status, expected } of shippingCases) {
+for (const {
+  id,
+  category,
+  description,
+  params,
+  status,
+  expected,
+} of shippingCases) {
   test(`${id} [${category}] ${description}`, async ({ request }) => {
     const response = await calculateShipping(request, params);
 

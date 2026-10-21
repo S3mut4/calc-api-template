@@ -10,12 +10,13 @@ export function calculateShipping(request: APIRequestContext, params: ShippingPa
   return request.get("/api/shipping/calculate", { params });
 }
 
-export function getTicketPrice(
-  request: APIRequestContext,
-  age: string | number,
-  day: string,
-) {
-  return request.get('/api/tickets/price', { params: { age, day } });
+export type TicketParams = {
+  age?: string | number;
+  day?: string;
+};
+
+export function getTicketPrice(request: APIRequestContext, params: TicketParams = {}) {
+  return request.get("/api/tickets/price", { params });
 }
 
 export function calculateTurnoverTax(
